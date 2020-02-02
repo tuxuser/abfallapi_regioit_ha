@@ -4,9 +4,9 @@
 
 # Home Assistant sensor for german waste collection schedule (regioIT API)
 
-## Credits
+## Functionality
 
-Based on [AWB Köln Home Assistant sensor](https://github.com/jensweimann/awb) by [jensweimann](https://github.com/jensweimann)
+The sensor shows the bin which will be collected the next day. The complete collection schedule is available as attributes of the sensor
 
 Supported services:
 
@@ -20,6 +20,14 @@ Supported services:
 * WML
 * KRWAF AWG / GEG
 
+![alt text](https://github.com/tuxuser/abfallapi_regioit_ha/blob/master/preview1.png "glance card")
+
+![alt text](https://github.com/tuxuser/abfallapi_regioit_ha/blob/master/preview2.png "glance card details")
+
+## Credits
+
+Based on [AWB Köln Home Assistant sensor](https://github.com/jensweimann/awb) by [jensweimann](https://github.com/jensweimann)
+
 ## Installation
 
 ### Manual
@@ -32,21 +40,7 @@ Add this repo in the settings as integration then install and restart home assis
 
 ## Discussion
 
-<!---
-Coming soon
-[Home Assistant Community Forum](https://community.home-assistant.io/t/abfallapi_regioit/0000000)
--->
-
-## Functionality
-
-The sensor shows the bin which will be collected the next day. The complete collection schedule is available as attributes of the sensor
-
-<!---
-Coming soon
-![alt text](https://github.com/tuxuser/abfallapi_regioit_ha/blob/master/preview1.png "glance card")
-
-![alt text](https://github.com/tuxuser/abfallapi_regioit_ha/blob/master/preview2.png "glance card details")
--->
+[Home Assistant Community Forum](https://community.home-assistant.io/t/german-mullabfuhr-sensor/168244)
 
 ## Configuration
 
@@ -118,7 +112,7 @@ strassen_id: 3839716
 ### Customize
 
 ```yaml
-sensor.abfallapi_regioit:
+sensor.muellabfuhr:
   friendly_name: Heute Mülltonne rausstellen
   icon: mdi:delete
 ```
@@ -142,11 +136,11 @@ sensor.abfallapi_regioit:
       - condition: time
         before: '23:00:00'
       - condition: template
-        value_template: "{{ (states.sensor.abfallapi_regioit.state != 'Keine') and (states.sensor.abfallapi_regioit.state != 'unknown') }}"
+        value_template: "{{ (states.sensor.muellabfuhr.state != 'Keine') and (states.sensor.muellabfuhr.state != 'unknown') }}"
   action:
     - service: notify.my_telegram
       data_template:
-        message: "{{ states.sensor.abfallapi_regioit.state }}"
+        message: "{{ states.sensor.muellabfuhr.state }}"
 ```
 
 ## DISCLAIMER
