@@ -1,6 +1,4 @@
-<!---
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
--->
 
 # Home Assistant sensor for german waste collection schedule (regioIT API)
 
