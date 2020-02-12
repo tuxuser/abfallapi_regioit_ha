@@ -34,6 +34,8 @@ BASE_URL_BAV = 'https://bav-abfallapp.regioit.de/abfall-app-bav'
 BASE_URL_WML = 'https://wml2-abfallapp.regioit.de/abfall-app-wml2'
 # KRWAF AWG / GEG
 BASE_URL_KRWAF = 'https://krwaf-abfallapp.regioit.de/abfall-app-krwaf'
+# Aachen
+BASE_URL_AACHEN = 'https://aachen-abfallapp.regioit.de/abfall-app-aachen'
 
 CITIES = {
     'Bergisch Gladbach': BASE_URL_BGL,
@@ -44,7 +46,8 @@ CITIES = {
     'Luedenscheid': BASE_URL_STL,
     'BAV': BASE_URL_BAV,
     'WML': BASE_URL_WML,
-    'KRWAF': BASE_URL_KRWAF
+    'KRWAF': BASE_URL_KRWAF,
+    'Aachen': BASE_URL_AACHEN
 }
 
 class RegioItAbfallApi(object):
