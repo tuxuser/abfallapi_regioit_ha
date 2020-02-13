@@ -63,7 +63,7 @@ anbieter_id: KRWAF
 
 #### ort_id
 
-`GET http://<BASE_URL>/rest/orte`
+`GET https://<BASE_URL>/rest/orte`
 
 Example output:
 
@@ -83,7 +83,7 @@ ort_id: 3839714
 
 #### strassen_id
 
-`GET http://<BASE_URL>/rest/orte/<ort_id>/strassen`
+`GET https://<BASE_URL>/rest/orte/<ort_id>/strassen`
 
 Example output:
 
