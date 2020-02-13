@@ -17,6 +17,7 @@ Supported services:
 * Bergischer Abfallwirtschaftverbund
 * WML
 * KRWAF AWG / GEG
+* Aachen
 
 ![alt text](https://github.com/tuxuser/abfallapi_regioit_ha/blob/master/preview1.png "glance card")
 
