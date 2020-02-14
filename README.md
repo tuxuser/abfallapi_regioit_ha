@@ -37,9 +37,10 @@ Based on [AWB Köln Home Assistant sensor](https://github.com/jensweimann/awb) b
 
 Copy all files from custom_components/abfallapi_regioit/ to custom_components/abfallapi_regioit/ inside your config Home Assistant directory.
 
-### Hacs
+### HACS
 
-Add this repo in the settings as integration then install and restart home assistant
+Search for `Abfall API (RegioIT)` in HACS -> Integrations.
+Install the integration and restart home assistant.
 
 ## Discussion
 
