@@ -44,7 +44,7 @@ Add this repo in the settings as integration then install and restart home assis
 
 ## Configuration
 
-### Find anbieter_id, ort_id and strassen_id
+### Find anbieter_id
 
 BASE_URL can be found in `gl_abfall_api.py` -> CITIES
 
@@ -58,7 +58,7 @@ Example:
 anbieter_id: KRWAF
 ```
 
-#### ort_id
+#### Verify names for strasse and ort
 
 `GET http://<BASE_URL>/rest/orte`
 
@@ -72,14 +72,6 @@ Example output:
 ]
 ```
 
-Example for *Ahlen*:
-
-```yaml
-ort_id: 3839714
-```
-
-#### strassen_id
-
 `GET http://<BASE_URL>/rest/orte/<ort_id>/strassen`
 
 Example output:
@@ -92,12 +84,6 @@ Example output:
 ]
 ```
 
-Example for *Abtstraße*:
-
-```yaml
-strassen_id: 3839716
-```
-
 ### Setup sensor
 
 ```yaml
@@ -105,8 +91,8 @@ strassen_id: 3839716
   name: muellabfuhr
   scan_interval: 3600
   anbieter_id: KRWAF
-  ort_id: 3839714
-  strassen_id: 3839716
+  ort: 'Ahlen'
+  strasse: 'Abtstraße'
 ```
 
 ### Customize

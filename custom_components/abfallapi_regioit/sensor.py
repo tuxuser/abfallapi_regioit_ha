@@ -25,14 +25,14 @@ _LOGGER = logging.getLogger(__name__)
 DATE_FORMAT = '%Y-%m-%d'
 
 CONF_ANBIETER_ID = 'anbieter_id'
-CONF_ORT_ID = 'ort_id'
-CONF_STRASSEN_ID = 'strassen_id'
+CONF_ORT = 'ort'
+CONF_STRASSE = 'strasse'
 
 _QUERY_SCHEME = vol.Schema({
     vol.Required(CONF_NAME): cv.string,
     vol.Required(CONF_ANBIETER_ID): cv.string,
-    vol.Required(CONF_ORT_ID): cv.string,
-    vol.Required(CONF_STRASSEN_ID): cv.string,
+    vol.Required(CONF_ORT): cv.string,
+    vol.Required(CONF_STRASSE): cv.string,
     vol.Optional(CONF_VALUE_TEMPLATE): cv.template
 })
 
@@ -52,19 +52,19 @@ def setup_platform(
 
     add_devices([RegioItAbfallSensor(config.get(CONF_NAME),
                                      base_url,
-                                     config.get(CONF_ORT_ID),
-                                     config.get(CONF_STRASSEN_ID),
+                                     config.get(CONF_ORT),
+                                     config.get(CONF_STRASSE),
                                      value_template)])
 
 class RegioItAbfallSensor(Entity):
 
     """Representation of a Sensor."""
-    def __init__(self, name, base_url, ort_id, strassen_id, value_template):
+    def __init__(self, name, base_url, ort, strasse, value_template):
         """Initialize the sensor."""
         self._name = name
 
-        self._ort_id = ort_id
-        self._strassen_id = strassen_id
+        self._ort = ort
+        self._strasse = strasse
 
         self._api = RegioItAbfallApi(base_url)
 
@@ -113,10 +113,52 @@ class RegioItAbfallSensor(Entity):
         fraktionen = {entry['id']:entry for entry in fraktionen}
 
         """
+        Get Orte
+        """
+        try:
+            with self._api.get_orte() as url:
+                orte = json.loads(url.read().decode())
+        except Exception as e:
+            _LOGGER.error('API call error: Orte, error: {}'.format(e))
+            return
+
+        valid_orte = [o for o in orte if o['name'] == self._ort]
+
+        if not valid_orte:
+            _LOGGER.error('No ort with name {0} was found!'.format(self._ort))
+            return
+        elif len(valid_orte) > 1:
+            _LOGGER.error('More than one match for ort {0} was found! Matches: {1}'.format(self._ort, valid_orte))
+            return
+        else:
+            ort_id = valid_orte[0]['id']
+
+        """
+        Get Streets
+        """
+        try:
+            with self._api.get_strassen_all(ort_id) as url:
+                streets = json.loads(url.read().decode())
+        except Exception as e:
+            _LOGGER.error('API call error: Strassen All, error: {}'.format(e))
+            return
+
+        valid_streets = [s for s in streets if s['name'] == self._strasse]
+
+        if not valid_streets:
+            _LOGGER.error('No street with name {0} was found!'.format(self._strasse))
+            return
+        elif len(valid_streets) > 1:
+            _LOGGER.error('More than one match for street \'{0}\' was found! Matches: {1}'.format(self._strasse, valid_streets))
+            return
+        else:
+            strassen_id = valid_streets[0]['id']
+
+        """
         Get Termine
         """
         try:
-            with self._api.get_termine(self._strassen_id) as url:
+            with self._api.get_termine(strassen_id) as url:
                 termine = json.loads(url.read().decode())
         except Exception as e:
             _LOGGER.error('API call error: Termine, error: {}'.format(e))
@@ -157,3 +199,4 @@ class RegioItAbfallSensor(Entity):
             self._state = data
 
         self._attributes = dict(sorted(attributes.items()))
+
