@@ -17,7 +17,7 @@ import urllib.request
 _LOGGER = logging.getLogger(__name__)
 
 # Bergisch Gladbach
-BASE_URL_BGL = 'http://aw-bgl2-abfallapp.regioit.de/abfall-app-aw-bgl2'
+BASE_URL_BGL = 'https://aw-bgl2-abfallapp.regioit.de/abfall-app-aw-bgl2'
 # Lindlar
 BASE_URL_LINDLAR = 'https://lindlar-abfallapp.regioit.de/abfall-app-lindlar'
 # ZEW
@@ -28,12 +28,22 @@ BASE_URL_DIN = 'https://din-abfallapp.regioit.de/abfall-app-din'
 BASE_URL_PI = 'https://pi-abfallapp.regioit.de/abfall-app-pi'
 # Lüdenscheid
 BASE_URL_STL = 'https://stl-abfallapp.regioit.de/abfall-app-stl'
-# Bergischer Abfallwirtschaftverbund
+# Bergischer Abfallwirtschaftverbund (Engelskirchen)
 BASE_URL_BAV = 'https://bav-abfallapp.regioit.de/abfall-app-bav'
-# WML
+# WML (ESB)
 BASE_URL_WML = 'https://wml2-abfallapp.regioit.de/abfall-app-wml2'
 # KRWAF AWG / GEG
 BASE_URL_KRWAF = 'https://krwaf-abfallapp.regioit.de/abfall-app-krwaf'
+# Aachen
+BASE_URL_AACHEN = 'https://aachen-abfallapp.regioit.de/abfall-app-aachen'
+# Dorsten
+BASE_URL_DORSTEN = 'https://dorsten-abfallapp.regioit.de/abfall-app-dorsten'
+# Gütersloh
+BASE_URL_GT2 = 'https://gt2-abfallapp.regioit.de/abfall-app-gt2'
+# Halver
+BASE_URL_HLV = 'https://hlv-abfallapp.regioit.de/abfall-app-hlv'
+# Coesfeld
+BASE_URL_COE = 'https://coe-abfallapp.regioit.de/abfall-app-coe'
 
 CITIES = {
     'Bergisch Gladbach': BASE_URL_BGL,
@@ -44,7 +54,12 @@ CITIES = {
     'Luedenscheid': BASE_URL_STL,
     'BAV': BASE_URL_BAV,
     'WML': BASE_URL_WML,
-    'KRWAF': BASE_URL_KRWAF
+    'KRWAF': BASE_URL_KRWAF,
+    'Aachen': BASE_URL_AACHEN,
+    'Dorsten': BASE_URL_DORSTEN,
+    'Guetersloh': BASE_URL_GT2,
+    'Halver': BASE_URL_HLV,
+    'Coesfeld': BASE_URL_COE
 }
 
 class RegioItAbfallApi(object):

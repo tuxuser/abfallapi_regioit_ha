@@ -1,6 +1,4 @@
-<!---
-[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
--->
+[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
 
 # Home Assistant sensor for german waste collection schedule (regioIT API)
 
@@ -19,6 +17,11 @@ Supported services:
 * Bergischer Abfallwirtschaftverbund
 * WML
 * KRWAF AWG / GEG
+* Aachen
+* Dorsten
+* Gütersloh
+* Halver
+* Coesfeld
 
 ![alt text](https://github.com/tuxuser/abfallapi_regioit_ha/blob/master/preview1.png "glance card")
 
@@ -34,55 +37,16 @@ Based on [AWB Köln Home Assistant sensor](https://github.com/jensweimann/awb) b
 
 Copy all files from custom_components/abfallapi_regioit/ to custom_components/abfallapi_regioit/ inside your config Home Assistant directory.
 
-### Hacs
+### HACS
 
-Add this repo in the settings as integration then install and restart home assistant
+Search for `Abfall API (RegioIT)` in HACS -> Integrations.
+Install the integration and restart home assistant.
 
 ## Discussion
 
 [Home Assistant Community Forum](https://community.home-assistant.io/t/german-mullabfuhr-sensor/168244)
 
 ## Configuration
-
-### Find anbieter_id
-
-BASE_URL can be found in `gl_abfall_api.py` -> CITIES
-
-#### anbieter_id
-
-anbieter_id is the human-readable string found in `gl_abfall_api.py` -> CITIES
-
-Example:
-
-```yaml
-anbieter_id: KRWAF
-```
-
-#### Verify names for strasse and ort
-
-`GET http://<BASE_URL>/rest/orte`
-
-Example output:
-
-```json
-[
- {"id":3839714,"name":"Ahlen"},
- {"id":3840376,"name":"Beckum"},
- ...
-]
-```
-
-`GET http://<BASE_URL>/rest/orte/<ort_id>/strassen`
-
-Example output:
-
-```json
-[
- {"id":3839716,"name":"Abtstraße","hausNrList":[],"ort":{"id":3839714,"name":"Ahlen"}},
- {"id":3839725,"name":"Agnes-Miegel-Straße","hausNrList":[],"ort":{"id":3839714,"name":"Ahlen"}},
- ...
-]
-```
 
 ### Setup sensor
 
@@ -127,6 +91,40 @@ sensor.muellabfuhr:
     - service: notify.my_telegram
       data_template:
         message: "{{ states.sensor.muellabfuhr.state }}"
+```
+
+### Find anbieter_id
+
+BASE_URL can be found in [regioit_abfall_api.py](https://github.com/tuxuser/abfallapi_regioit_ha/blob/master/custom_components/abfallapi_regioit/regioit_abfall_api.py#L48) -> CITIES
+
+```yaml
+anbieter_id: KRWAF
+```
+
+### Verify names for strasse and ort
+
+`GET https://<BASE_URL>/rest/orte`
+
+Example output:
+
+```json
+[
+ {"id":3839714,"name":"Ahlen"},
+ {"id":3840376,"name":"Beckum"},
+ ...
+]
+```
+
+`GET http://<BASE_URL>/rest/orte/<ort_id>/strassen`
+
+Example output:
+
+```json
+[
+ {"id":3839716,"name":"Abtstraße","hausNrList":[],"ort":{"id":3839714,"name":"Ahlen"}},
+ {"id":3839725,"name":"Agnes-Miegel-Straße","hausNrList":[],"ort":{"id":3839714,"name":"Ahlen"}},
+ ...
+]
 ```
 
 ## DISCLAIMER

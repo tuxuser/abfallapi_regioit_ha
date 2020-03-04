@@ -1,0 +1,6 @@
+{
+  "name": "Abfall API (RegioIT)",
+  "country": "DE",
+  "homeassistant": "0.104.3",
+  "render_readme": true
+}
