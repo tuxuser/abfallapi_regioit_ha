@@ -44,6 +44,8 @@ BASE_URL_GT2 = 'https://gt2-abfallapp.regioit.de/abfall-app-gt2'
 BASE_URL_HLV = 'https://hlv-abfallapp.regioit.de/abfall-app-hlv'
 # Coesfeld
 BASE_URL_COE = 'https://coe-abfallapp.regioit.de/abfall-app-coe'
+# Norderstedt
+BASE_URL_NDS = 'https://nds-abfallapp.regioit.de/abfall-app-nds'
 
 CITIES = {
     'Bergisch Gladbach': BASE_URL_BGL,
@@ -59,7 +61,8 @@ CITIES = {
     'Dorsten': BASE_URL_DORSTEN,
     'Guetersloh': BASE_URL_GT2,
     'Halver': BASE_URL_HLV,
-    'Coesfeld': BASE_URL_COE
+    'Coesfeld': BASE_URL_COE,
+    'Norderstedt': BASE_URL_NDS
 }
 
 class RegioItAbfallApi(object):
