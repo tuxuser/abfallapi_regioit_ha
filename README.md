@@ -22,6 +22,7 @@ Supported services:
 * Gütersloh
 * Halver
 * Coesfeld
+* Norderstedt
 
 ![alt text](https://github.com/tuxuser/abfallapi_regioit_ha/blob/master/preview1.png "glance card")
 
