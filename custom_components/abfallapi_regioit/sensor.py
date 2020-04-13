@@ -74,6 +74,9 @@ class RegioItAbfallSensor(Entity):
 
         self.update()
 
+    def strip_multiple_whitespaces(self, input_str):
+        return ' '.join(input_str.split())
+
     @property
     def name(self):
         """Return the name of the sensor."""
@@ -122,7 +125,7 @@ class RegioItAbfallSensor(Entity):
             _LOGGER.error('API call error: Orte, error: {}'.format(e))
             return
 
-        valid_orte = [o for o in orte if o['name'] == self._ort]
+        valid_orte = [o for o in orte if self.strip_multiple_whitespaces(o['name']) == self._ort]
 
         if not valid_orte:
             _LOGGER.error('No ort with name {0} was found!'.format(self._ort))
@@ -143,7 +146,7 @@ class RegioItAbfallSensor(Entity):
             _LOGGER.error('API call error: Strassen All, error: {}'.format(e))
             return
 
-        valid_streets = [s for s in streets if s['name'] == self._strasse]
+        valid_streets = [s for s in streets if self.strip_multiple_whitespaces(s['name']) == self._strasse]
 
         if not valid_streets:
             _LOGGER.error('No street with name {0} was found!'.format(self._strasse))
