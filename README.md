@@ -23,6 +23,7 @@ Supported services:
 * Halver
 * Coesfeld
 * Norderstedt
+* Solingen
 
 ![alt text](https://github.com/tuxuser/abfallapi_regioit_ha/blob/master/preview1.png "glance card")
 
