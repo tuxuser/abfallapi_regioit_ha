@@ -46,6 +46,8 @@ BASE_URL_HLV = 'https://hlv-abfallapp.regioit.de/abfall-app-hlv'
 BASE_URL_COE = 'https://coe-abfallapp.regioit.de/abfall-app-coe'
 # Norderstedt
 BASE_URL_NDS = 'https://nds-abfallapp.regioit.de/abfall-app-nds'
+#Solingen
+BASE_URL_SOLINGEN = 'https://solingen-abfallapp.regioit.de/abfall-app-solingen'
 
 CITIES = {
     'Bergisch Gladbach': BASE_URL_BGL,
@@ -62,7 +64,8 @@ CITIES = {
     'Guetersloh': BASE_URL_GT2,
     'Halver': BASE_URL_HLV,
     'Coesfeld': BASE_URL_COE,
-    'Norderstedt': BASE_URL_NDS
+    'Norderstedt': BASE_URL_NDS,
+    'Solingen': BASE_URL_SOLINGEN
 }
 
 class RegioItAbfallApi(object):
