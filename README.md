@@ -1,5 +1,9 @@
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
 
+> **Note** <br>
+> By now there is a more feature-full and actively maintained Home Assistant plugin/addon called [Waste Collection Schedule](https://github.com/mampfes/hacs_waste_collection_schedule). <br>
+> Please switch to it! :smile:
+
 # Home Assistant sensor for german waste collection schedule (regioIT API)
 
 ## Functionality
