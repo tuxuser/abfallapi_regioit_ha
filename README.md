@@ -24,6 +24,7 @@ Supported services:
 * Coesfeld
 * Norderstedt
 * Solingen
+* Nürnberg (Stadt)
 
 ![alt text](https://github.com/tuxuser/abfallapi_regioit_ha/blob/master/preview1.png "glance card")
 
