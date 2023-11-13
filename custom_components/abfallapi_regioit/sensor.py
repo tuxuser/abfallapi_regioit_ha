@@ -13,7 +13,6 @@ from homeassistant.const import (
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.entity import Entity
 import voluptuous as vol
-import urllib.request
 import json
 from datetime import datetime
 from datetime import timedelta
@@ -27,21 +26,24 @@ DATE_FORMAT = '%Y-%m-%d'
 CONF_ANBIETER_ID = 'anbieter_id'
 CONF_ORT = 'ort'
 CONF_STRASSE = 'strasse'
+CONF_PLZ = 'plz'
 
 _QUERY_SCHEME = vol.Schema({
     vol.Required(CONF_NAME): cv.string,
     vol.Required(CONF_ANBIETER_ID): cv.string,
     vol.Required(CONF_ORT): cv.string,
     vol.Required(CONF_STRASSE): cv.string,
+    vol.Optional(CONF_PLZ): cv.string,
     vol.Optional(CONF_VALUE_TEMPLATE): cv.template
 })
 
+
 def setup_platform(
-    hass,
-    config,
-    add_devices,
-    discovery_info=None
-    ):
+        hass,
+        config,
+        add_devices,
+        discovery_info=None
+):
     """Setup the sensor platform."""
     value_template = config.get(CONF_VALUE_TEMPLATE)
     if value_template is not None:
@@ -53,18 +55,25 @@ def setup_platform(
     add_devices([RegioItAbfallSensor(config.get(CONF_NAME),
                                      base_url,
                                      config.get(CONF_ORT),
+                                     config.get(CONF_PLZ),
                                      config.get(CONF_STRASSE),
                                      value_template)])
 
-class RegioItAbfallSensor(Entity):
 
+def strip_multiple_whitespaces(input_str):
+    return ' '.join(input_str.split())
+
+
+class RegioItAbfallSensor(Entity):
     """Representation of a Sensor."""
-    def __init__(self, name, base_url, ort, strasse, value_template):
+
+    def __init__(self, name, base_url, ort, plz, strasse, value_template):
         """Initialize the sensor."""
         self._name = name
 
         self._ort = ort
         self._strasse = strasse
+        self._plz = plz
 
         self._api = RegioItAbfallApi(base_url)
 
@@ -73,9 +82,6 @@ class RegioItAbfallSensor(Entity):
         self._attributes = None
 
         self.update()
-
-    def strip_multiple_whitespaces(self, input_str):
-        return ' '.join(input_str.split())
 
     @property
     def name(self):
@@ -112,8 +118,8 @@ class RegioItAbfallSensor(Entity):
         except Exception as e:
             _LOGGER.error('API call error: Fraktionen, error: {}'.format(e))
             return
-        
-        fraktionen = {entry['id']:entry for entry in fraktionen}
+
+        fraktionen = {entry['id']: entry for entry in fraktionen}
 
         """
         Get Orte
@@ -125,13 +131,18 @@ class RegioItAbfallSensor(Entity):
             _LOGGER.error('API call error: Orte, error: {}'.format(e))
             return
 
-        valid_orte = [o for o in orte if self.strip_multiple_whitespaces(o['name']) == self._ort]
+        if self._plz:
+            valid_orte = [o for o in orte
+                          if self.strip_multiple_whitcespaces(o['name']) == self._ort and o['plz'] == self._plz]
+        else:
+            valid_orte = [o for o in orte if self.strip_multiple_whitcespaces(o['name']) == self._ort]
 
         if not valid_orte:
             _LOGGER.error('No ort with name {0} was found!'.format(self._ort))
             return
         elif len(valid_orte) > 1:
-            _LOGGER.error('More than one match for ort {0} was found! Matches: {1}'.format(self._ort, valid_orte))
+            _LOGGER.error(f'More than one match for ort {self._ort} was found! Matches: {valid_orte}. \n'
+                          f'Try to set the PLZ within the configuration.')
             return
         else:
             ort_id = valid_orte[0]['id']
@@ -146,13 +157,14 @@ class RegioItAbfallSensor(Entity):
             _LOGGER.error('API call error: Strassen All, error: {}'.format(e))
             return
 
-        valid_streets = [s for s in streets if self.strip_multiple_whitespaces(s['name']) == self._strasse]
+        valid_streets = [s for s in streets if strip_multiple_whitespaces(s['name']) == self._strasse]
 
         if not valid_streets:
             _LOGGER.error('No street with name {0} was found!'.format(self._strasse))
             return
         elif len(valid_streets) > 1:
-            _LOGGER.error('More than one match for street \'{0}\' was found! Matches: {1}'.format(self._strasse, valid_streets))
+            _LOGGER.error(
+                'More than one match for street \'{0}\' was found! Matches: {1}'.format(self._strasse, valid_streets))
             return
         else:
             strassen_id = valid_streets[0]['id']
@@ -166,7 +178,7 @@ class RegioItAbfallSensor(Entity):
         except Exception as e:
             _LOGGER.error('API call error: Termine, error: {}'.format(e))
             return
-        
+
         """
         Sort Termine by date
         """
@@ -177,21 +189,21 @@ class RegioItAbfallSensor(Entity):
 
             if datum not in tmp_termine:
                 tmp_termine[datum] = list()
-            
+
             tmp_termine[datum].append(entry)
-        
+
         termine = tmp_termine
-        
+
         attributes = {}
         for date, abfuhren in sorted(termine.items()):
             muell = None
-            for abfuhr in abfuhren: 
+            for abfuhr in abfuhren:
                 fraktion_id = abfuhr['bezirk']['fraktionId']
                 muell_typ = fraktionen.get(fraktion_id).get('name')
                 muell = muell_typ if not muell else ', '.join([muell, muell_typ])
-    
+
             attributes.update({date: muell})
-        
+
         attributes.update({'Zuletzt aktualisiert': datetime.now().strftime(DATE_FORMAT + ' %H:%M:%S')})
         data = attributes.get(tommorow.strftime(DATE_FORMAT), "Keine")
 
@@ -202,4 +214,3 @@ class RegioItAbfallSensor(Entity):
             self._state = data
 
         self._attributes = dict(sorted(attributes.items()))
-

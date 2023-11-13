@@ -155,7 +155,7 @@ class RegioItAbfallApi(object):
         return self._request('/rest/strassen/{}/termine'.format(strasse_id))
 
 def main():
-    api = RegioItAbfallApi(CITIES['Bergisch Gladbach'])
+    api = RegioItAbfallApi(CITIES['Norderstedt'])
     
     choice = 0
 
